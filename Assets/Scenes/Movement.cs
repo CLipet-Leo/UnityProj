@@ -2,21 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Mouvement : MonoBehaviour
 {
-    public GameObject go;
-    public float Speed;
-    void Start()
+    [Header("Mouvement")]
+    public float MS;
+    public float GroundDrag;
+
+    [Header("OnDurst")]
+    public float TitansHeight;
+    public LayerMask ThisGround;
+    private bool Grounded;
+
+    public Transform orientation;
+    private float HInput, VInput;
+
+    Vector3 MD;
+
+    Rigidbody rb;
+
+    private void Start()
     {
+        rb = GetComponent<Rigidbody>();
+
+        rb.freezeRotation = true;
+    }
+
+    private void Update()
+    {
+        Grounded = Physics.Raycast(transform.position, Vector2.down, TitansHeight * 0.5f + 0.2f, ThisGround);
+
+        MyInput();
+
+        if (Grounded)
+            rb.drag = GroundDrag;
+        else
+            rb.drag = 0;
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Z)) {go.transform.position += new Vector3(0, 0, Speed);}
-        if(Input.GetKeyDown(KeyCode.Q)) { go.transform.position += new Vector3(Speed, 0, 0);}
-        if(Input.GetKeyDown(KeyCode.S)) { go.transform.position += new Vector3(0, 0, -Speed); }
-        if(Input.GetKeyDown(KeyCode.D)) { go.transform.position += new Vector3(-Speed, 0, 0); }
+        MovePLayer();
+    }
+
+    private void MyInput()
+    {
+        HInput = Input.GetAxisRaw("Horizontal");
+        VInput = Input.GetAxisRaw("Vertical");
+    }
+
+    private void MovePLayer()
+    {
+        MD = orientation.forward * VInput + orientation.right * HInput;
+
+        rb.AddForce(MD.normalized * MS * 10f, ForceMode.Force);
     }
 }
