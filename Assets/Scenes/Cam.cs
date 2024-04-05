@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class Cam : MonoBehaviour
 {
-    public Transform orientation;
+    public float SensX, SensY;
+    public Transform Orientation;
 
-    public float sensX, sensY;
+    private float RotaX, RotaY;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        float MouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * SensX;
+        float MouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * SensY;
+
+        RotaY += MouseX;
+        RotaX -= MouseY;
+
+        RotaX = Mathf.Clamp(RotaX, -90f, 90f);
+
+        transform.rotation = Quaternion.Euler(RotaX, RotaY, 0);
+        Orientation.rotation = Quaternion.Euler(0, RotaY, 0);
     }
 }
