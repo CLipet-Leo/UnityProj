@@ -50,7 +50,7 @@ public class Mouvement : MonoBehaviour
     {
         HInput = Input.GetAxisRaw("Horizontal");
         VInput = Input.GetAxisRaw("Vertical");
-        JInput = Input.GetAxisRaw("Jump");
+        //JInput = Input.GetAxisRaw("Jump");
 
         //rb.AddForce(Vector3.up);
         
