@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Mouvement : MonoBehaviour
 {
+    public SlideBarEvent slideBarEvent;
+
     [Header("Mouvement")]
     public float MS;
     private float MSS;
@@ -20,6 +25,10 @@ public class Mouvement : MonoBehaviour
     Vector3 MD;
 
     Rigidbody rb;
+    private void Awake()
+    {
+        slideBarEvent = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SlideBarEvent>();
+    }
 
     private void Start()
     {
@@ -56,7 +65,10 @@ public class Mouvement : MonoBehaviour
         
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            MS = MSS * 1.5f;
+            if (false == slideBarEvent.StateStamina)
+                MS = MSS * 1.5f;
+            else MS = MSS;
+
         }
         else MS = MSS;
     }
