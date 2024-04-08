@@ -2877,8 +2877,6 @@ GameObject:
   m_Component:
   - component: {fileID: 565847979}
   - component: {fileID: 565847980}
-  - component: {fileID: 565847983}
-  - component: {fileID: 565847982}
   - component: {fileID: 565847981}
   m_Layer: 0
   m_Name: Player
@@ -2951,41 +2949,6 @@ MonoBehaviour:
   Area: 10
   Range: 100
   SpotAngle: 50
---- !u!114 &565847982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 565847976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06e4dcc33deaa7c42b219a1e623a6718, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SensX: 300
-  SensY: 300
-  Orientation: {fileID: 583007020}
---- !u!114 &565847983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 565847976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f52bca83457d765428ca67eb269df43b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slideBarEvent: {fileID: 1072986298}
-  MS: 1
-  GroundDrag: 0
-  TitansHeight: 2
-  ThisGround:
-    serializedVersion: 2
-    m_Bits: 0
-  orientation: {fileID: 565847979}
 --- !u!1001 &566499640
 PrefabInstance:
   m_ObjectHideFlags: 0

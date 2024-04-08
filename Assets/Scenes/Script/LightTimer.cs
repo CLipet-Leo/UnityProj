@@ -14,7 +14,7 @@ public class LightTimer : MonoBehaviour
 
     private void Start()
     {
-        gameObject.GetComponent<Cam>().enabled = true;
+        //gameObject.GetComponent<Cam>().enabled = true;
     }
 
     // Update is called once per frame
