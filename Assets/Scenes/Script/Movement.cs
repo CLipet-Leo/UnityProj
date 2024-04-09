@@ -40,6 +40,7 @@ public class Mouvement : MonoBehaviour
     private void Update()
     {
         Grounded = Physics.Raycast(transform.position, Vector2.down, TitansHeight * 0.5f + 0.2f, ThisGround);
+        //Debug.Log(Grounded);
 
         MyInput();
 
