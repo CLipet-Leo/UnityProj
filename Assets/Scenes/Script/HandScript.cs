@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class HandScript : MonoBehaviour
 {
-    public float sensX;
-    public float sensY;
+    public CameraScript cam;
 
-    public Transform orientation;
+    float sensX;
+    float sensY;
+
+    Transform orientation;
 
     float xRotation;
     float yRotation;
@@ -15,7 +17,9 @@ public class HandScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        sensX = cam.sensX;
+        sensY = cam.sensY;
+        orientation = cam.orientation;
     }
 
     // Update is called once per frame
