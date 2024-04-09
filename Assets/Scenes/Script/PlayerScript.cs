@@ -11,7 +11,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Movement")]
     public float CurrentSpeed;
     private float MoveSpeed = 2.5f;
-    private float SprintSpeed = 1.5f;
+    private float SprintSpeed = 2.5f;
 
     public float groundDrag;
 
@@ -76,13 +76,13 @@ public class PlayerScript : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-/*        if (Input.GetKeyDown(KeyCode.LeftShift) && grounded)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             if (false == slideBarEvent.StateStamina)
                 CurrentSpeed = MoveSpeed * SprintSpeed;
-            else CurrentSpeed = MoveSpeed;
         }
-*/
+        else CurrentSpeed = MoveSpeed;
+
         // when to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
@@ -112,9 +112,9 @@ public class PlayerScript : MonoBehaviour
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         // limit velocity if needed
-        if (flatVel.magnitude > CurrentSpeed)
+        if (flatVel.magnitude > MoveSpeed)
         {
-            Vector3 limitedVel = flatVel.normalized * CurrentSpeed;
+            Vector3 limitedVel = flatVel.normalized * MoveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
