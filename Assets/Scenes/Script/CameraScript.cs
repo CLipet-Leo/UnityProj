@@ -9,8 +9,8 @@ public class CameraScript : MonoBehaviour
 
     public Transform orientation;
 
-    float xRotation;
-    float yRotation;
+    protected float xRotation;
+    protected float yRotation;
 
     // Start is called before the first frame update
     void Start()
