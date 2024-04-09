@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Take : MonoBehaviour
 {
@@ -9,28 +10,32 @@ public class Take : MonoBehaviour
 
     public Transform Hand;
     public TMP_Text text;
+    private bool OnObject;
 
     private void Start()
     {
+        OnObject = false;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if ( Input.GetKeyDown(KeyCode.E))
+        if (true == OnObject && Input.GetKeyDown(KeyCode.E))
         {
             GetComponent<Rigidbody>().isKinematic = true;
             transform.parent = Hand;
+            transform.position = Hand.transform.position + new Vector3(0,-0.2f,0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-            Debug.Log("YEEPII");
-            text.gameObject.SetActive(true);
+        text.gameObject.SetActive(true);
+        OnObject = true;
     }
     private void OnTriggerExit(Collider other)
     {
-            text.gameObject.SetActive(false);
+        text.gameObject.SetActive(false);
+        OnObject = false;
     }
 }
