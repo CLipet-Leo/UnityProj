@@ -3,21 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SlideBarEvent : MonoBehaviour
 {
     //Do a list of slider for any Object
-    public Slider SliderBar;
+    public List<Slider> SliderBar;
     public GameObject obj;
     public float Stamina;
     public bool StateStamina, GameLaunch;
 
     private void Start()
     {
-        SliderBar.maxValue = Stamina;
-        SliderBar.value = Stamina;
+        SliderBar[0].maxValue = Stamina;
+        SliderBar[0].value = Stamina;
         StartEventTimer();
     }
     private void StartEventTimer()
@@ -35,7 +36,7 @@ public class SlideBarEvent : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                     Stamina -= Time.deltaTime * (1.5f * obj.GetComponent<Rigidbody>().mass * 10);
-                else if (Stamina <= SliderBar.value)
+                else if (Stamina <= SliderBar[0].value)
                     Stamina += Time.deltaTime;
 
                 yield return new WaitForSeconds(0.001f);
@@ -47,7 +48,7 @@ public class SlideBarEvent : MonoBehaviour
 
                 if (false == StateStamina)
                 {
-                    SliderBar.value = Stamina;
+                    SliderBar[0].value = Stamina;
                 }
 
             }
@@ -57,14 +58,14 @@ public class SlideBarEvent : MonoBehaviour
 
                 yield return new WaitForSeconds(0.001f);
 
-                if (Stamina >= (SliderBar.maxValue*20)/100)
+                if (Stamina >= (SliderBar[0].maxValue*20)/100)
                 {
                     StateStamina = false;
                 }
 
                 if (true == StateStamina)
                 {
-                    SliderBar.value = Stamina;
+                    SliderBar[0].value = Stamina;
                 }
             }
         }
