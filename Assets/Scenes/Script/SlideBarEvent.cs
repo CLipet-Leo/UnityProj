@@ -12,23 +12,37 @@ public class SlideBarEvent : MonoBehaviour
     //Do a list of slider for any Object
     public List<Slider> SliderBar;
     public GameObject obj;
-    public float Stamina;
-    public bool StateStamina, GameLaunch;
+    public float Stamina,
+        Fuel,
+        Terror;
+    public bool StateStamina, 
+        GameLaunch, 
+        StateFuel, 
+        StateTerror;
 
     private void Start()
     {
         SliderBar[0].maxValue = Stamina;
         SliderBar[0].value = Stamina;
+        SliderBar[1].maxValue = Fuel;
+        SliderBar[1].value = Fuel;
+        SliderBar[2].maxValue = Terror;
+        SliderBar[2].value = Terror;
+
+        StateStamina = false;
+        StateTerror = true;
+        GameLaunch = true;
+
         StartEventTimer();
     }
     private void StartEventTimer()
     {
-        StateStamina = false;
-        GameLaunch = true;
-        StartCoroutine(StartTimer());
+        StartCoroutine(StaminaBar());
+        StartCoroutine(LightBar());
+        StartCoroutine(TerrorBar());
     }
 
-    IEnumerator StartTimer()
+    IEnumerator StaminaBar()
     {
         while (GameLaunch)
         {
@@ -50,8 +64,8 @@ public class SlideBarEvent : MonoBehaviour
                 {
                     SliderBar[0].value = Stamina;
                 }
-
             }
+
             while (true == StateStamina)
             {
                 Stamina += Time.deltaTime * 2;
@@ -67,6 +81,33 @@ public class SlideBarEvent : MonoBehaviour
                 {
                     SliderBar[0].value = Stamina;
                 }
+            }
+        }
+    }
+    IEnumerator LightBar()
+    {
+        while (GameLaunch)
+        {
+            while (true == StateTerror)
+            {
+
+                Debug.Log("Yeeepii");
+                yield return new WaitForSeconds(0.001f);
+            }
+        }
+    }
+    IEnumerator TerrorBar()
+    {
+        while (GameLaunch)
+        {
+            while (true == StateTerror)
+            {
+
+                Terror -= Time.deltaTime * 1.5f;
+                if (Terror >= 0)
+                    SliderBar[2].value = Terror;
+
+                yield return new WaitForSeconds(0.001f);
             }
         }
     }
