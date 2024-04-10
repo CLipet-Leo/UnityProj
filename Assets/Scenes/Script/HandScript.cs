@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HandScript : MonoBehaviour
 {
+    [Header("Camera object")]
     public CameraScript cam;
 
     float xRotation;

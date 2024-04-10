@@ -10,6 +10,7 @@ public class PlayerScript : MonoBehaviour
 
     public float groundDrag;
 
+    [Header("Jump")]
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;

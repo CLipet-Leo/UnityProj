@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
+    [Header("Sensibility")]
     public float sensX;
     public float sensY;
 
+    [Header("Orientation")]
     public Transform orientation;
 
+    [Header("Other")]
     public bool isLockedCam;
 
     public float xRotation;
