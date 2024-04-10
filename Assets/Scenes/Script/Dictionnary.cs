@@ -11,7 +11,7 @@ public class Dictionnary : MonoBehaviour
     [SerializeField]
     NewDict newDict;
 
-    Dictionary<string, GameObject> Obj;
+    Dictionary<string, LightParam> Obj;
 
     private void Start()
     {
@@ -25,12 +25,12 @@ public class NewDict
     [SerializeField]
     NewDictItem[] DictItems;
 
-    public Dictionary<string, GameObject> ToDictionary()
+    public Dictionary<string, LightParam> ToDictionary()
     {
-        Dictionary<string, GameObject> newDict = new Dictionary<string, GameObject>();
+        Dictionary<string, LightParam> newDict = new Dictionary<string, LightParam>();
         foreach (var item in DictItems)
         {
-            newDict.Add(item.Name, item.obj);
+            newDict.Add(item.Name, item.light);
         }
 
         return newDict;
@@ -43,5 +43,12 @@ public class NewDictItem
     [SerializeField]
     public string Name;
     [SerializeField]
-    public GameObject obj;
+    public LightParam light;
+}
+
+[Serializable]
+public struct LightParam
+{
+    public float CurrentLightFuel;
+    public float LightFuel;
 }

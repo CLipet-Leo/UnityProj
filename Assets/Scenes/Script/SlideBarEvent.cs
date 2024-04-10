@@ -10,6 +10,8 @@ using UnityEngine.UI;
 public class SlideBarEvent : MonoBehaviour
 {
     //Do a list of slider for any Object
+    public Transform Hand;
+
     public List<Slider> SliderBar;
     public GameObject obj;
     public float Stamina,
@@ -24,8 +26,7 @@ public class SlideBarEvent : MonoBehaviour
     {
         SliderBar[0].maxValue = Stamina;
         SliderBar[0].value = Stamina;
-        SliderBar[1].maxValue = Fuel;
-        SliderBar[1].value = Fuel;
+
         SliderBar[2].maxValue = Terror;
         SliderBar[2].value = Terror;
 
@@ -41,7 +42,6 @@ public class SlideBarEvent : MonoBehaviour
         StartCoroutine(LightBar());
         StartCoroutine(TerrorBar());
     }
-
     IEnumerator StaminaBar()
     {
         while (GameLaunch)
@@ -88,25 +88,58 @@ public class SlideBarEvent : MonoBehaviour
     {
         while (GameLaunch)
         {
-            while (true == StateTerror)
+            for (int i = 0; i < Hand.childCount; i++)
             {
+                if (Hand.GetChild(i).TryGetComponent(out YeetLight light))
+                {
+                    SliderBar[1].maxValue = light.LightFuel;
+                    SliderBar[1].value = light.CurrentLightFuel;
 
-                Debug.Log("Yeeepii");
-                yield return new WaitForSeconds(0.001f);
+                    while (true == StateFuel)
+                    {
+                        SliderBar[1].value -= Time.deltaTime * 3f;
+                        if (light.CurrentLightFuel >= 0)
+                            SliderBar[1].value = light.CurrentLightFuel;
+
+                        yield return new WaitForSeconds(0.001f);
+                    }
+                }
             }
+            yield return new WaitForSeconds(0.001f);
         }
     }
     IEnumerator TerrorBar()
     {
         while (GameLaunch)
         {
-            while (true == StateTerror)
+
+            for(int i = 0; i < Hand.childCount; i++)
+            {
+               if(Hand.GetChild(i).TryGetComponent(out YeetLight light))
+                {
+                    while (true == StateTerror)
+                    {
+                        if (Terror <= SliderBar[2].value)
+                            Terror += Time.deltaTime * 1.5f;
+
+                        SliderBar[2].value = Terror;
+
+                        if (Terror <= 0)
+                            StateTerror = false;
+                        yield return new WaitForSeconds(0.001f);
+                    }
+                }
+            }
+
+            while (Hand.childCount == 0)
             {
 
-                Terror -= Time.deltaTime * 1.5f;
-                if (Terror >= 0)
-                    SliderBar[2].value = Terror;
-
+                Terror -= Time.deltaTime;
+                SliderBar[2].value = Terror;
+                if (Terror <= 0)
+                {
+                    StateTerror = false;
+                }
                 yield return new WaitForSeconds(0.001f);
             }
         }
