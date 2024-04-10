@@ -6782,6 +6782,9 @@ MonoBehaviour:
   sensX: 400
   sensY: 400
   orientation: {fileID: 565847979}
+  isLockedCam: 0
+  xRotation: 0
+  yRotation: 0
 --- !u!1001 &1253829113
 PrefabInstance:
   m_ObjectHideFlags: 0

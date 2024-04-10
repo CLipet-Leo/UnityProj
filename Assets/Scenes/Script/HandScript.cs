@@ -6,35 +6,36 @@ public class HandScript : MonoBehaviour
 {
     public CameraScript cam;
 
-    float sensX;
-    float sensY;
-
-    Transform orientation;
-
     float xRotation;
     float yRotation;
 
     // Start is called before the first frame update
     void Start()
     {
-        sensX = cam.sensX;
-        sensY = cam.sensY;
-        orientation = cam.orientation;
+        
     }
 
     // Update is called once per frame
     private void Update()
     {
         // get mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * cam.sensX;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * cam.sensY;
 
-        yRotation += mouseX;
+        if (cam.isLockedCam == false)
+        {
+            yRotation = cam.yRotation;
+            xRotation = cam.xRotation;
+        }
+        else
+        {
+            yRotation += mouseX;
         
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // A CHANGER !!!
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        }
 
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation , 0);
     }
 }

@@ -9,14 +9,17 @@ public class CameraScript : MonoBehaviour
 
     public Transform orientation;
 
-    protected float xRotation;
-    protected float yRotation;
+    public bool isLockedCam;
+
+    public float xRotation;
+    public float yRotation;
 
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        isLockedCam = false;
     }
 
     // Update is called once per frame
@@ -26,16 +29,17 @@ public class CameraScript : MonoBehaviour
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButton(2))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            
+            isLockedCam = true;
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            isLockedCam = false;
 
             // rotate cam and orientation
             yRotation += mouseX;
