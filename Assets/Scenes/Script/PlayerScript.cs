@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEngine.UI.Slider;
 
 public class PlayerScript : MonoBehaviour
 {
+    private SlideBarEvent slideBarEvent;
+
     [Header("Movement")]
-    public float moveSpeed;
+    public float CurrentSpeed;
+    private float MoveSpeed = 2.5f;
+    private float SprintSpeed = 3f;
 
     public float groundDrag;
 
@@ -16,6 +21,7 @@ public class PlayerScript : MonoBehaviour
     public float airMultiplier;
     bool readyToJump;
 
+    [Header("Keybinds")]
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
 
@@ -32,6 +38,11 @@ public class PlayerScript : MonoBehaviour
     Vector3 moveDirection;
 
     Rigidbody rb;
+
+    private void Awake()
+    {
+        slideBarEvent = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SlideBarEvent>();
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -66,6 +77,12 @@ public class PlayerScript : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (false == slideBarEvent.StateStamina)
+                CurrentSpeed = MoveSpeed * SprintSpeed;
+        }
+        else CurrentSpeed = MoveSpeed;
 
         // when to jump
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
@@ -84,11 +101,11 @@ public class PlayerScript : MonoBehaviour
 
         // on ground
         if (grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * CurrentSpeed * 10f, ForceMode.Force);
 
         // in air
         else if (!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * CurrentSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
     private void SpeedControl()
@@ -96,9 +113,9 @@ public class PlayerScript : MonoBehaviour
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         // limit velocity if needed
-        if (flatVel.magnitude > moveSpeed)
+        if (flatVel.magnitude > MoveSpeed)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            Vector3 limitedVel = flatVel.normalized * MoveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
