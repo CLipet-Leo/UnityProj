@@ -28,6 +28,9 @@ public class YeetLight : MonoBehaviour
             Light.intensity = Light.intensity - (LightFuel / CurrentLightFuel) * 0.00003f;
         }
         if (CurrentLightFuel <= 0)
+        {
             On = false;
+            Destroy(gameObject);
+        }
     }
 }

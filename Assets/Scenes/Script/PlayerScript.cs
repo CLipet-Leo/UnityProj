@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEngine.UI.Slider;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -12,7 +8,6 @@ public class PlayerScript : MonoBehaviour
     public float CurrentSpeed;
     private float MoveSpeed = 2.5f;
     private float SprintSpeed = 3f;
-
     public float groundDrag;
 
     [Header("Jump")]
@@ -28,7 +23,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask ThisGround;
-    bool grounded;
+    public bool grounded;
 
     public Transform orientation;
 
@@ -37,7 +32,7 @@ public class PlayerScript : MonoBehaviour
 
     Vector3 moveDirection;
 
-    Rigidbody rb;
+    public Rigidbody rb;
 
     private void Awake()
     {
@@ -56,7 +51,7 @@ public class PlayerScript : MonoBehaviour
     private void Update()
     {
         // ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * transform.localScale.y * 0.5f + 0.05f, ThisGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * transform.localScale.y * 0.5f + 0.1f, ThisGround);
 
         MyInput();
         SpeedControl();
