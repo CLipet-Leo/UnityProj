@@ -24,6 +24,8 @@ public class SlideBarEvent : MonoBehaviour
 
     private void Start()
     {
+        SliderBar[1].gameObject.SetActive(false);
+
         SliderBar[0].maxValue = Stamina;
         SliderBar[0].value = Stamina;
 
@@ -31,7 +33,7 @@ public class SlideBarEvent : MonoBehaviour
         SliderBar[2].value = Terror;
 
         StateStamina = false;
-        StateTerror = true;
+        StateTerror = false;
         GameLaunch = true;
 
         StartEventTimer();
@@ -92,15 +94,23 @@ public class SlideBarEvent : MonoBehaviour
             {
                 if (Hand.GetChild(i).TryGetComponent(out YeetLight light))
                 {
+
                     SliderBar[1].maxValue = light.LightFuel;
                     SliderBar[1].value = light.CurrentLightFuel;
+                    if (light.CurrentLightFuel > 0)
+                        SliderBar[1].gameObject.SetActive(true);
+
 
                     while (true == StateFuel)
                     {
                         SliderBar[1].value -= Time.deltaTime * 3f;
-                        if (light.CurrentLightFuel >= 0)
-                            SliderBar[1].value = light.CurrentLightFuel;
+                        SliderBar[1].value = light.CurrentLightFuel;
 
+                        if (light.CurrentLightFuel <= 0)
+                        {
+                            SliderBar[1].gameObject.SetActive(false);
+                            StateFuel = false;
+                        }
                         yield return new WaitForSeconds(0.001f);
                     }
                 }
@@ -117,15 +127,17 @@ public class SlideBarEvent : MonoBehaviour
             {
                if(Hand.GetChild(i).TryGetComponent(out YeetLight light))
                 {
-                    while (true == StateTerror)
+                    while (false == StateTerror)
                     {
-                        if (Terror <= SliderBar[2].value)
+                        if (Terror <= SliderBar[2].value && light.CurrentLightFuel >= 0)
                             Terror += Time.deltaTime * 1.5f;
+                        else if (Terror >= 0 && light.CurrentLightFuel <= 0)
+                            Terror -= Time.deltaTime;
 
                         SliderBar[2].value = Terror;
 
                         if (Terror <= 0)
-                            StateTerror = false;
+                            StateTerror = true;
                         yield return new WaitForSeconds(0.001f);
                     }
                 }
@@ -138,7 +150,7 @@ public class SlideBarEvent : MonoBehaviour
                 SliderBar[2].value = Terror;
                 if (Terror <= 0)
                 {
-                    StateTerror = false;
+                    StateTerror = true;
                 }
                 yield return new WaitForSeconds(0.001f);
             }
