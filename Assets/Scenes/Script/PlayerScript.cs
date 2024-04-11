@@ -27,6 +27,9 @@ public class PlayerScript : MonoBehaviour
 
     public Transform orientation;
 
+    [Header("Other")]
+    public bool isDead = false;
+
     float horizontalInput;
     float verticalInput;
 

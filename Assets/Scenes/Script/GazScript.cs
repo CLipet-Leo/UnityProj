@@ -4,8 +4,10 @@ using static UnityEngine.Rendering.DebugUI;
 public class GazScript : MonoBehaviour
 {
     [Header("Gaz")]
+    public PlayerScript Player;
     public Transform Hand;
     public GameObject Filter;
+    public GameObject DeathScreen;
     public int delayBeforeCougth;
     public float timeOnGaz; 
 
@@ -16,7 +18,6 @@ public class GazScript : MonoBehaviour
         OnObject = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (true == OnObject)
@@ -34,6 +35,9 @@ public class GazScript : MonoBehaviour
                 {
                     // Player dies from BOOM !!!
                     Debug.Log("BOOM !!!");
+                    // je ne sais pas si c'est ok comme ça, mais well...
+                    Destroy(Player);
+                    DeathScreen.SetActive(true);
                 }
             }
         }
