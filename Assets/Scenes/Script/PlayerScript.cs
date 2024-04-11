@@ -11,7 +11,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Movement")]
     public float CurrentSpeed;
     private float MoveSpeed = 2.5f;
-    private float SprintSpeed = 2.5f;
+    private float SprintSpeed = 3f;
 
     public float groundDrag;
 

@@ -8489,7 +8489,6 @@ GameObject:
   m_Component:
   - component: {fileID: 565847979}
   - component: {fileID: 565847980}
-  - component: {fileID: 565847981}
   - component: {fileID: 565847982}
   - component: {fileID: 565847983}
   m_Layer: 0
@@ -8546,23 +8545,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &565847981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 565847976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06346b4ceffa0b469abe081b43eed6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Light: {fileID: 1662640494}
-  Intensity: 0.3
-  Area: 10
-  Range: 100
-  SpotAngle: 50
 --- !u!114 &565847982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12116,7 +12098,7 @@ MonoBehaviour:
   - {fileID: 428306514}
   - {fileID: 1109351529}
   obj: {fileID: 565847976}
-  Stamina: 50
+  Stamina: 80
   Fuel: 0
   Terror: 100
   StateStamina: 0
@@ -15716,11 +15698,6 @@ PrefabInstance:
 --- !u!4 &1662640493 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 7c4cfd35d7e78fb44a0f5522e37c35b1, type: 3}
-  m_PrefabInstance: {fileID: 808663309}
-  m_PrefabAsset: {fileID: 0}
---- !u!108 &1662640494 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 10800000, guid: 7c4cfd35d7e78fb44a0f5522e37c35b1, type: 3}
   m_PrefabInstance: {fileID: 808663309}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1665840382
