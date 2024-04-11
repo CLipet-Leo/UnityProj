@@ -8,8 +8,9 @@ public class Take : MonoBehaviour
 {
     // Start is called before the first frame update
     public YeetLight YeetLight;
-
-    public Transform Hand;
+    public List<GameObject> Inventory;
+    public Transform Hand, 
+        BackPack;
     public TMP_Text text;
     private bool OnObject;
 
@@ -28,21 +29,38 @@ public class Take : MonoBehaviour
     {
         if (true == OnObject && Input.GetKeyDown(KeyCode.E))
         {
+            GetComponent<Rigidbody>().isKinematic = true;
+            transform.parent = BackPack;
+            transform.position = BackPack.transform.position;
+            //transform.parent = Hand;
+            //transform.position = Hand.transform.position + new Vector3(0,-0.2f,0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
             YeetLight.On = true;
             GetComponent<Rigidbody>().isKinematic = true;
-            transform.parent = Hand;
+            Inventory[1].transform.parent = Hand;
             transform.position = Hand.transform.position + new Vector3(0,-0.2f,0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
         }
+
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        text.gameObject.SetActive(true);
-        OnObject = true;
+        if (other.tag == "Player")
+        {
+            text.gameObject.SetActive(true);
+            OnObject = true;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        text.gameObject.SetActive(false);
-        OnObject = false;
+        if (other.tag == "Player")
+        {
+            text.gameObject.SetActive(false);
+            OnObject = false;
+        }
     }
 }
