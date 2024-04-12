@@ -6,9 +6,6 @@ TagManager:
   tags:
   - GameManager
   - PlayerCamera
-  - Item
-  - LightManager
-  - Hand
   layers:
   - Default
   - TransparentFX
