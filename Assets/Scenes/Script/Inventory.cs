@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.XR;
-using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -24,9 +23,9 @@ public class Inventory : MonoBehaviour
 
         for (int i = 0; i < AllSlots; i++)
         {
-            Slots[i] = BagPrefab.transform.GetChild(i).gameObject;
+/*            Slots[i] = BagPrefab.transform.GetChild(i).gameObject;
             if (Slots[i].GetComponent<Slots>().Item == null)
-                Slots[i].GetComponent<Slots>().empty = true;
+                Slots[i].GetComponent<Slots>().empty = true;*/
         }
     }
 
