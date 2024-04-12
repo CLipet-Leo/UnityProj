@@ -26,17 +26,17 @@ public class Items : MonoBehaviour
     private void Start()
     {
 
-        /*        if(false == PlayerObject)
+/*        if (false == PlayerObject)
+        {
+            int AllLight = LightManager.transform.childCount;
+            for (int i = 0; i < AllLight; i++)
+            {
+                if (LightManager.transform.GetChild(i).gameObject.GetComponent<Items>().ID == ID)
                 {
-                    int AllLight = LightManager.transform.childCount;
-                    for(int i = 0; i < AllLight; i++)
-                    {
-                        if(LightManager.transform.GetChild(i).gameObject.GetComponent<Items>().ID == ID)
-                        {
-                            Lighting = LightManager.transform.GetChild(i).gameObject;
-                        }
-                    }
-                }*/
+                    Lighting = LightManager.transform.GetChild(i).gameObject;
+                }
+            }
+        }*/
     }
 
     private void Update()

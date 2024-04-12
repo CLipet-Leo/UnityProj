@@ -1,11 +1,21 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
     private SlideBarEvent slideBarEvent;
+    public GameObject Menu,BalckScreen;
+    [SerializeField] AudioSource Src;
+       
+
+    public AudioClip Deep, 
+        scream,
+        Effondrement;
+    private int count = 0;
 
     [Header("Movement")]
-    public float CurrentSpeed;
+    public float CurrentSpeed,timer;
     private float MoveSpeed = 2.5f;
     private float SprintSpeed = 3f;
     public float groundDrag;
@@ -14,7 +24,7 @@ public class PlayerScript : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    bool readyToJump;
+    private bool readyToJump;
 
     [Header("Keybinds")]
     [Header("Keybinds")]
@@ -30,10 +40,10 @@ public class PlayerScript : MonoBehaviour
     [Header("Other")]
     public bool isDead = false;
 
-    float horizontalInput;
-    float verticalInput;
+    private float horizontalInput;
+    private float verticalInput;
 
-    Vector3 moveDirection;
+    private Vector3 moveDirection;
 
     public Rigidbody rb;
 
@@ -42,9 +52,10 @@ public class PlayerScript : MonoBehaviour
         slideBarEvent = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SlideBarEvent>();
     }
 
-    // Start is called before the first frame update
+    // Start is called Mommy
     private void Start()
     {
+        StartCoroutine(StartGame());
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
@@ -53,6 +64,12 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        timer += Time.deltaTime;
+        if(timer >= 50)
+        {
+            StartCoroutine(Scream());
+            timer = 0;
+        }
         // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * transform.localScale.y * 0.5f + 0.1f, ThisGround);
 
@@ -75,6 +92,23 @@ public class PlayerScript : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        if (verticalInput > 0)
+        {
+            if (count < 1)
+            {
+                Debug.Log("eqal a 0");
+
+                count = 1;
+                Src.clip = Deep;
+                Src.Play();
+                Src.loop = true;
+                Src.volume = 0.2f;
+            }
+        }
+        else
+        {
+            Src.loop = false;
+        }
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (false == slideBarEvent.StateStamina)
@@ -91,6 +125,14 @@ public class PlayerScript : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+
+        // Escape
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Menu.SetActive(true);
+        }
+
+
     }
 
     private void MovePlayer()
@@ -128,5 +170,30 @@ public class PlayerScript : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    private IEnumerator Scream()
+    {
+        yield return new WaitForSeconds(1f);
+        Src.clip = scream;
+        Src.volume = 1;
+        Src.Play();
+    }
+
+    private IEnumerator StartGame()
+    {
+        Src.clip = scream;
+        Src.Play();
+        yield return new WaitForSeconds(3f);
+        Src.clip = Effondrement;
+        Src.volume = 1;
+        Src.Play();
+        yield return new WaitForSeconds(5f);
+        BalckScreen.SetActive(false);
+    }
+
+    public void Resume()
+    {
+        Menu.SetActive(false);
     }
 }

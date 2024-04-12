@@ -3,40 +3,37 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 using static UnityEngine.Rendering.HighDefinition.ProbeSettings;
 
 public class Take : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    [SerializeField] AudioSource Src;
+
+    public AudioClip Torch;
+
+    // Start is called before the first sex update
     public YeetLight YeetLight;
+    public Inventory Inventory;
     public int ID;
-    public List<GameObject> Inventory;
+    public int count = 0;
     public Transform Hand,
         BackPack;
-    public TMP_Text text;
-    private bool OnObject;
 
     private void Awake()
     {
         YeetLight = GetComponent<YeetLight>();
+        Inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<Inventory>();
     }
 
     private void Start()
     {
-        OnObject = false;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (true == OnObject && Input.GetKeyDown(KeyCode.E))
-        {
-            GetComponent<Rigidbody>().isKinematic = true;
-            transform.parent = BackPack;
-            transform.position = BackPack.transform.position;
-            //transform.parent = Hand;
-            //transform.position = Hand.transform.position + new Vector3(0,-0.2f,0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
-        }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -45,12 +42,11 @@ public class Take : MonoBehaviour
             {
                 if (BackPack.transform.GetChild(i).gameObject.GetComponent<Items>().ID == ID)
                 {
-                    Inventory[1].transform.parent = BackPack;
-                    Inventory[1].transform.position = BackPack.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
+                    Inventory.Invent[0].SetActive(true);
                     YeetLight.On = true;
-                    GetComponent<Rigidbody>().isKinematic = true;
-                    Inventory[0].transform.parent = Hand;
-                    Inventory[0].transform.position = Hand.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
+                    Inventory.Invent[0].transform.parent = Hand;
+                    Inventory.Invent[0].transform.rotation = Hand.transform.rotation;
+                    Inventory.Invent[0].transform.position = Hand.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
                 }
             }
         }
@@ -62,41 +58,44 @@ public class Take : MonoBehaviour
             {
                 if (BackPack.transform.GetChild(i).gameObject.GetComponent<Items>().ID == ID)
                 {
-                    Inventory[0].transform.parent = BackPack;
-                    Inventory[0].transform.position = BackPack.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
+                    Inventory.Invent[1].SetActive(true);
+
                     YeetLight.On = true;
-                    GetComponent<Rigidbody>().isKinematic = true;
-                    Inventory[1].transform.parent = Hand;
-                    Inventory[1].transform.position = Hand.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
+                    Inventory.Invent[1].transform.parent = Hand;
+                    Inventory.Invent[1].transform.position = Hand.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
                 }
+            }
+        }
+
+        if (Hand.childCount != 0)
+        {
+            if (Hand.GetChild(0).name == "Torch")
+            {
+                Debug.Log("Torch comme nom");
+                if (count < 1)
+                {
+                    Src.clip = Torch;
+                    Src.Play();
+                    count++;
+                }
+                Src.loop = true;
+            }
+            else
+            {
+                count = 0;
+                Src.loop = false;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-            for (int i = 0; i < Hand.childCount; i++)
+            for (int i = 0; i < Inventory.Invent.Count; i++)
             {
-                Inventory[i].transform.parent = BackPack;
-                Inventory[i].transform.position = BackPack.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
+                Inventory.Invent[i].SetActive(false);
+                Inventory.Invent[i].transform.parent = BackPack;
+                Inventory.Invent[i].transform.position = BackPack.transform.position + new Vector3(0, -0.2f, 0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
             }
             YeetLight.On = false;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            text.gameObject.SetActive(true);
-            OnObject = true;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            text.gameObject.SetActive(false);
-            OnObject = false;
         }
     }
 }

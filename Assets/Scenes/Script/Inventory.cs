@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.XR;
 
 public class Inventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public GameObject BagPrefab;
+    // Start is called before the first cum update
+    public GameObject BagPrefab, Items;
+    public List<GameObject> Invent;
+    public TMP_Text text;
+    public Transform BackPack;
+
+    private bool OnObject;
     public bool BagEnable;
 
     private int AllSlots,
@@ -18,19 +24,34 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        AllSlots = 5;
-        Slots = new GameObject[AllSlots];
-
-        for (int i = 0; i < AllSlots; i++)
+        for (int i = 0; i < BackPack.childCount; i++)
         {
-/*            Slots[i] = BagPrefab.transform.GetChild(i).gameObject;
-            if (Slots[i].GetComponent<Slots>().Item == null)
-                Slots[i].GetComponent<Slots>().empty = true;*/
+            Invent.Add(BackPack.GetChild(i).gameObject);
         }
+        /*        AllSlots = 5;
+                Slots = new GameObject[AllSlots];
+
+                for (int i = 0; i < AllSlots; i++)
+                {
+                    Slots[i] = BagPrefab.transform.GetChild(i).gameObject;
+                    if (Slots[i].GetComponent<Slots>().Item == null)
+                        Slots[i].GetComponent<Slots>().empty = true;
+                }*/
     }
 
     void Update()
     {
+        if (true == OnObject && Input.GetKeyDown(KeyCode.E))
+        {
+            Invent.Add(Items);
+            Debug.Log("Inventory Update 2 ");
+            //GetComponent<Rigidbody>().isKinematic = true;
+            Items.transform.parent = BackPack;
+            Items.transform.position = BackPack.transform.position;
+            //transform.parent = Hand;
+            //transform.position = Hand.transform.position + new Vector3(0,-0.2f,0.3f) /*+ Vector3.RotateTowards(new Vector3(0, 0, 0.3f), new Vector3(0, 0, 3), 1f ,0.0f)*/;
+        }
+
         if (Input.GetKeyDown(KeyCode.I))
             BagEnable = !BagEnable;
 
@@ -44,10 +65,22 @@ public class Inventory : MonoBehaviour
     {
         if (other.tag == "Item")
         {
-            //GameObject ItemPickedUp = other.gameObject;
-            //Items Items = ItemPickedUp.GetComponent<Items>();
+            Items = other.gameObject;
+            text.gameObject.SetActive(true);
+            OnObject = true;
 
-            //AddItem(ItemPickedUp ,Items.ID, Items.Type, Items.Desc, Items.icon);
+            /*            GameObject ItemPickedUp = other.gameObject;
+                        Items Items = ItemPickedUp.GetComponent<Items>();
+
+                        AddItem(ItemPickedUp ,Items.ID, Items.Type, Items.Desc, Items.icon);*/
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Item")
+        {
+            text.gameObject.SetActive(false);
+            OnObject = false;
         }
     }
 
