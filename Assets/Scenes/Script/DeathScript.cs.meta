@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Script/DeathScript.cs.meta
 guid: 2bc23cc17764e634b990d7f34adeb192
+========
+guid: 35ea5027d7c4ccb4c8e161eb7de96325
+>>>>>>>> origin/SlideBarEvent:Assets/Scenes/Script/Inventory.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
