@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlideBarEvent : MonoBehaviour
+public class SlideBarEvent : Items
 {
     //Do a list of slider for any Object
     public Transform Hand;
@@ -91,21 +91,21 @@ public class SlideBarEvent : MonoBehaviour
         {
             for (int i = 0; i < Hand.childCount; i++)
             {
-                if (Hand.GetChild(i).TryGetComponent(out YeetLight light))
+                if (Hand.GetChild(i).TryGetComponent(out LightDuration LightDuration))
                 {
 
-                    SliderBar[1].maxValue = light.LightFuel;
-                    SliderBar[1].value = light.CurrentLightFuel;
-                    if (light.CurrentLightFuel > 0)
+                    SliderBar[1].maxValue = Fuell;
+                    SliderBar[1].value = CurrentFuell;
+                    if (CurrentFuell > 0)
                         SliderBar[1].gameObject.SetActive(true);
 
 
                     while (true == StateFuel)
                     {
                         SliderBar[1].value -= Time.deltaTime * 3f;
-                        SliderBar[1].value = light.CurrentLightFuel;
+                        SliderBar[1].value = CurrentFuell;
 
-                        if (light.CurrentLightFuel <= 0)
+                        if (CurrentFuell <= 0)
                         {
                             SliderBar[1].gameObject.SetActive(false);
                             StateFuel = false;
@@ -124,13 +124,13 @@ public class SlideBarEvent : MonoBehaviour
 
             for(int i = 0; i < Hand.childCount; i++)
             {
-               if(Hand.GetChild(i).TryGetComponent(out YeetLight light))
+               if(Hand.GetChild(i).TryGetComponent(out LightDuration LightDuration))
                 {
                     while (false == StateTerror)
                     {
-                        if (Terror <= SliderBar[2].value && light.CurrentLightFuel >= 0)
+                        if (Terror <= SliderBar[2].value && CurrentFuell >= 0)
                             Terror += Time.deltaTime * 1.5f;
-                        else if (Terror >= 0 && light.CurrentLightFuel <= 0)
+                        else if (Terror >= 0 && CurrentFuell <= 0)
                             Terror -= Time.deltaTime;
 
                         SliderBar[2].value = Terror;
