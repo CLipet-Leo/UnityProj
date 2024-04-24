@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Inventory : MonoBehaviour
 {
     public GameObject InventoryPopUp;
 
     public Transform BackPack;
-    private List<GameObject> inventory = new List<GameObject>();
+    public List<GameObject> inventory = new List<GameObject>();
     private bool StateInventoryPopUp;
 
     private void Awake()
@@ -23,15 +24,15 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.I) && false == StateInventoryPopUp)
+        if (Input.GetKeyDown(KeyCode.I) && false == StateInventoryPopUp)
         {
             InventoryPopUp.SetActive(true);
             StateInventoryPopUp = true;
         }
-        else if(Input.GetKey(KeyCode.I) && true == StateInventoryPopUp)
+        else if (Input.GetKeyDown(KeyCode.I) && true == StateInventoryPopUp)
         {
             InventoryPopUp.SetActive(false);
-            StateInventoryPopUp= false;
+            StateInventoryPopUp = false;
         }
     }
 
@@ -39,6 +40,7 @@ public class Inventory : MonoBehaviour
     {
         inventory.Add(Item);
         Item.transform.parent = BackPack;
+        Item.transform.position = BackPack.transform.position;
+        Debug.Log("In void for add item");
     }
-
 }

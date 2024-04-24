@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+    
 public class Take : MonoBehaviour
 {
     //Prendre une list Item 
@@ -12,7 +13,7 @@ public class Take : MonoBehaviour
     public Items ItemsScript;
 
     [Header("------InternScript------")]
-    public GameObject GameObject, 
+    public GameObject ThisGameObject, 
         InteractiveActionText;
     public Transform Hand;
     
@@ -24,24 +25,52 @@ public class Take : MonoBehaviour
 
     private void Update()
     {
+        Action_Input();
+    }
+
+    private void Action_Input()
+    {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            GameObject.transform.parent = Hand;
-            GameObject.transform.rotation = Hand.transform.rotation;
-            GameObject.transform.position = Hand.transform.position + new Vector3(0, -0.2f, 0.3f);
+            ThisGameObject.transform.parent = Hand;
+            ThisGameObject.transform.rotation = Hand.transform.rotation;
+            ThisGameObject.transform.position = Hand.transform.position + new Vector3(0, -0.2f, 0.3f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if(null != ThisGameObject)
+                InventoryScript.Add_Item_To_Inventory(ThisGameObject);
         }
     }
 
-    private void OnTriggerEnter()
+
+    private void OnTriggerEnter(Collider ObjectCollider)
     {
         //Prendras le nom de l'object + l'information pour le prendre
         //Stock l'object si pris
-        if (true == ItemsScript.Interactive)
+        ItemsScript = ObjectCollider.gameObject.GetComponent<Items>();
+        if (ObjectCollider.gameObject.TryGetComponent(out Items component))
         {
-            InteractiveActionText.SetActive(true);
-            if(Input.GetKeyDown(KeyCode.E))
+            for (int i = 0; i < InventoryScript.inventory.Count; i++)
             {
-                InventoryScript.Add_Item_To_Inventory(GameObject);
+                foreach(GameObject Similar_Items in  InventoryScript.inventory)
+                {
+                    if (Similar_Items.tag != component.Name)
+                    {
+                        InteractiveActionText.SetActive(true);
+                        ThisGameObject = ObjectCollider.gameObject;
+                        Debug.Log("dans la condition");
+                    }
+                    InteractiveActionText.SetActive(true);
+                    Debug.Log("dans le foreach");
+                }
+                Debug.Log("dans le for");
+            }
+            if (InventoryScript.inventory.Count == 0)
+            {
+                InteractiveActionText.SetActive(true);
+                ThisGameObject = ObjectCollider.gameObject;
             }
         }
     }

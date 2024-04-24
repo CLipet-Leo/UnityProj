@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour
     // Start is called Mommy
     private void Start()
     {
-        StartCoroutine(StartGame());
+        //StartCoroutine(StartGame());
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
@@ -67,7 +67,7 @@ public class PlayerScript : MonoBehaviour
         timer += Time.deltaTime;
         if(timer >= 50)
         {
-            StartCoroutine(Scream());
+            //StartCoroutine(Scream());
             timer = 0;
         }
         // ground check
@@ -92,23 +92,7 @@ public class PlayerScript : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-        if (verticalInput > 0)
-        {
-            if (count < 1)
-            {
-                Debug.Log("eqal a 0");
-
-                count = 1;
-                Src.clip = Deep;
-                Src.Play();
-                Src.loop = true;
-                Src.volume = 0.2f;
-            }
-        }
-        else
-        {
-            Src.loop = false;
-        }
+        
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (false == slideBarEvent.StateStamina)
