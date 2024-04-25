@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -39,8 +40,9 @@ public class Take : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if(null != ThisGameObject)
-                InventoryScript.Add_Item_To_Inventory(ThisGameObject);
+            InventoryScript.Add_Item_To_Inventory(ThisGameObject);
+
+            Debug.Log("Key E Down");
         }
     }
 
@@ -52,32 +54,29 @@ public class Take : MonoBehaviour
         ItemsScript = ObjectCollider.gameObject.GetComponent<Items>();
         if (ObjectCollider.gameObject.TryGetComponent(out Items component))
         {
-            for (int i = 0; i < InventoryScript.inventory.Count; i++)
+            InteractiveActionText.SetActive(true);
+            foreach(GameObject Similar_Items in InventoryScript.inventory)
             {
-                foreach(GameObject Similar_Items in  InventoryScript.inventory)
-                {
-                    if (Similar_Items.tag != component.Name)
-                    {
-                        InteractiveActionText.SetActive(true);
-                        ThisGameObject = ObjectCollider.gameObject;
-                        Debug.Log("dans la condition");
-                    }
-                    InteractiveActionText.SetActive(true);
-                    Debug.Log("dans le foreach");
-                }
-                Debug.Log("dans le for");
+                if (component.Name != Similar_Items.GetComponent<Items>().Name)
+                    ThisGameObject = ObjectCollider.gameObject;
             }
             if (InventoryScript.inventory.Count == 0)
-            {
-                InteractiveActionText.SetActive(true);
                 ThisGameObject = ObjectCollider.gameObject;
-            }
         }
     }
 
+    //Reset le trigger
     private void OnTriggerExit()
     {
-        //Reset le trigger
         InteractiveActionText.SetActive(false);
+        //Verifie que l'item est bien dans l'inventaire
+        foreach (GameObject Similar_Items in InventoryScript.inventory)
+        {
+            if (null != ThisGameObject && Similar_Items.GetComponent<Items>().Name == ThisGameObject.GetComponent<Items>().Name)
+                ThisGameObject.GetComponent<BoxCollider>().isTrigger = false;
+        }
+
+        //Reset la Variable -> Null
+        ThisGameObject = null;
     }
 }
