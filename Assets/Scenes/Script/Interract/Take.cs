@@ -50,7 +50,6 @@ public class Take : MonoBehaviour
         }
     }
 
-
     private void OnTriggerEnter(Collider ObjectCollider)
     {
         //Prendras le nom de l'object + l'information pour le prendre
@@ -59,34 +58,37 @@ public class Take : MonoBehaviour
         if (ObjectCollider.gameObject.TryGetComponent(out Items component))
         {
             InteractiveActionText.SetActive(true);
-            foreach(GameObject Similar_Items in InventoryScript.inventory)
-            {
-                Debug.Log(Similar_Items);
-                if (null == Similar_Items || component.Name != Similar_Items.GetComponent<Items>().Name)
-                    ThisGameObject = ObjectCollider.gameObject;
-            }
+            ThisGameObject = ObjectCollider.gameObject;
         }
     }
 
     //Reset le trigger
     private void OnTriggerExit()
     {
+        bool Verificate = false;
         InteractiveActionText.SetActive(false);
         //Verifie que l'item est bien dans l'inventaire
-        foreach (GameObject Similar_Items in InventoryScript.inventory)
+        for (int i = 0; i < InventoryScript.inventory.Count; i++)
         {
-            if (null != ThisGameObject && ThisGameObject.GetComponent<Items>().Name == Similar_Items.GetComponent<Items>().Name)
+            if (null == InventoryScript.inventory[i])
             {
-                ThisGameObject.GetComponent<BoxCollider>().isTrigger = false;
-                Debug.Log("l75");
-                break;
+                continue;
+            }
+            else if (null != ThisGameObject && ThisGameObject.GetComponent<Items>().Name != InventoryScript.inventory[i].GetComponent<Items>().Name)
+            {
+                continue;
             }
             else
                 break;
-        }
 
+            if (i == InventoryScript.inventory.Count)
+                Verificate = true;
+            else
+                break;
+        }
+        if (true == Verificate)
+            ThisGameObject.GetComponent<BoxCollider>().isTrigger = false;
         //Reset la Variable -> Null
-        Debug.Log("l84");
         ThisGameObject = null;
     }
 }

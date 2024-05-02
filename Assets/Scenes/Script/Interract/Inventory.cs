@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
 
 public class Inventory : MonoBehaviour
 {
-    public GameObject InventoryPopUp, 
-        InventoryFullText;
+    public GameObject InventoryPopUp;
     public Transform BackPack;
     public List<GameObject> inventory = new List<GameObject>();
+    public List<GameObject> AllTextPopUp = new List<GameObject>();
 
     private bool StateInventoryPopUp;
 
@@ -51,15 +52,21 @@ public class Inventory : MonoBehaviour
                 Item.transform.position = BackPack.transform.position;
                 break;
             }
-            else
-            StartCoroutine(TextPopUp());
+            else if (Item.GetComponent<Items>().Name == inventory[i].GetComponent<Items>().Name)
+            {
+                AllTextPopUp[1].SetActive(true);
+                StartCoroutine(TextPopUp());
+                break;
+            }
         }
     }
 
     IEnumerator TextPopUp()
     {
-        InventoryFullText.SetActive(true);
         yield return new WaitForSeconds(2f);
-        InventoryFullText.SetActive(false);
+        foreach(GameObject Text in AllTextPopUp)
+        {
+            Text.SetActive(false);
+        }
     }
 }

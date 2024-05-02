@@ -6,13 +6,6 @@ public class PlayerScript : MonoBehaviour
 {
     private SlideBarEvent slideBarEvent;
     public GameObject Menu,BalckScreen;
-    [SerializeField] AudioSource Src;
-       
-
-    public AudioClip Deep, 
-        scream,
-        Effondrement;
-    private int count = 0;
 
     [Header("Movement")]
     public float CurrentSpeed,timer;
@@ -26,7 +19,6 @@ public class PlayerScript : MonoBehaviour
     public float airMultiplier;
     private bool readyToJump;
 
-    [Header("Keybinds")]
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
 
@@ -154,26 +146,6 @@ public class PlayerScript : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
-    }
-
-    private IEnumerator Scream()
-    {
-        yield return new WaitForSeconds(1f);
-        Src.clip = scream;
-        Src.volume = 1;
-        Src.Play();
-    }
-
-    private IEnumerator StartGame()
-    {
-        Src.clip = scream;
-        Src.Play();
-        yield return new WaitForSeconds(3f);
-        Src.clip = Effondrement;
-        Src.volume = 1;
-        Src.Play();
-        yield return new WaitForSeconds(5f);
-        BalckScreen.SetActive(false);
     }
 
     public void Resume()

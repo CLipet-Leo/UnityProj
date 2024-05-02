@@ -8,6 +8,8 @@ TagManager:
   - PlayerCamera
   - Item
   - BackPack
+  - InventoryFullText
+  - Similar_Item_In_Inventory
   layers:
   - Default
   - TransparentFX
