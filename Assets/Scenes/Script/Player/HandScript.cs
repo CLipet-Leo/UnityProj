@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class HandScript : MonoBehaviour
 {
-    [Header("Camera object")]
-    public CameraScript cam;
+    private CameraScript cam;
 
-    float xRotation;
-    float yRotation;
+    private float xRotation;
+    private float yRotation;
 
+
+
+    // Awake is called when the game load
+    private void Awake()
+    {
+        cam = GameObject.FindGameObjectWithTag("Head").GetComponent<CameraScript>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -20,10 +26,9 @@ public class HandScript : MonoBehaviour
     private void Update()
     {
         // get mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * cam.sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * cam.sensY;
+        //float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * cam.sensX;
 
-        if (cam.isLockedCam == false)
+/*        if (cam.isLockedCam == false)
         {
             yRotation = cam.yRotation;
             xRotation = cam.xRotation;
@@ -33,9 +38,9 @@ public class HandScript : MonoBehaviour
             yRotation += mouseX;
         
             xRotation -= mouseY;
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            xRotation = Mathf.Clamp(xRotation, -30f, 30f);
 
-        }
+        }*/
 
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }

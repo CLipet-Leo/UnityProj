@@ -5,35 +5,29 @@ using UnityEngine.SceneManagement;
 public class PlayerScript : MonoBehaviour
 {
     private SlideBarEvent slideBarEvent;
-    public GameObject Menu,BalckScreen;
+
+    [Header("Sensibility")]
+    public float sensY;
+    public float sensX;
 
     [Header("Movement")]
-    public float CurrentSpeed,timer;
+    public float CurrentSpeed;
     private float MoveSpeed = 2.5f;
     private float SprintSpeed = 3f;
     public float groundDrag;
-
-    [Header("Jump")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
-    private bool readyToJump;
-
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask ThisGround;
     public bool grounded;
 
+    [Header("Orientation")]
     public Transform orientation;
-
-    [Header("Other")]
-    public bool isDead = false;
-
+    public Transform orientationCam;
     private float horizontalInput;
     private float verticalInput;
+    private float yRotation;
+    private float xRotation;
 
     private Vector3 moveDirection;
 
@@ -41,32 +35,23 @@ public class PlayerScript : MonoBehaviour
 
     private void Awake()
     {
-        slideBarEvent = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SlideBarEvent>();
+        //slideBarEvent = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SlideBarEvent>();
     }
-
-    // Start is called Mommy
     private void Start()
     {
-        //StartCoroutine(StartGame());
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
-        readyToJump = true;
+        //rb.freezeRotation = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
-
-    // Update is called once per frame
     private void Update()
     {
-        timer += Time.deltaTime;
-        if(timer >= 50)
-        {
-            //StartCoroutine(Scream());
-            timer = 0;
-        }
         // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * transform.localScale.y * 0.5f + 0.1f, ThisGround);
 
         MyInput();
-        SpeedControl();
+
+        CameraMouvement();
 
         // handle drag
         if (grounded)
@@ -74,12 +59,10 @@ public class PlayerScript : MonoBehaviour
         else
             rb.drag = 0;
     }
-
-    private void FixedUpdate()
+    private void FixedUpdate() //50 frame
     {
         MovePlayer();
     }
-
     private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -91,26 +74,21 @@ public class PlayerScript : MonoBehaviour
                 CurrentSpeed = MoveSpeed * SprintSpeed;
         }
         else CurrentSpeed = MoveSpeed;
-
-        // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
-        {
-            readyToJump = false;
-
-            Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-
-        // Escape
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Menu.SetActive(true);
-        }
-
-
     }
+    private void CameraMouvement()
+    {
+        float mouseY = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensY;
+        float mouseX = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensX;
 
+        // rotate cam and orientation
+        yRotation += mouseY;
+        xRotation -= mouseX;
+        xRotation = Mathf.Clamp(xRotation, -60f, 60f);
+
+        // Apply rotation on Axe Y and X
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        orientationCam.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+    }
     private void MovePlayer()
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
@@ -121,35 +99,6 @@ public class PlayerScript : MonoBehaviour
 
         // in air
         else if (!grounded)
-            rb.AddForce(moveDirection.normalized * CurrentSpeed * 10f * airMultiplier, ForceMode.Force);
-    }
-
-    private void SpeedControl()
-    {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // limit velocity if needed
-        if (flatVel.magnitude > MoveSpeed)
-        {
-            Vector3 limitedVel = flatVel.normalized * MoveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-        }
-    }
-
-    private void Jump()
-    {
-        // reset y velocity
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
-
-    public void Resume()
-    {
-        Menu.SetActive(false);
+            rb.AddForce(moveDirection.normalized * CurrentSpeed * 10f , ForceMode.Force);
     }
 }
